@@ -16,6 +16,8 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
+# HTTP client library, useful for external requests
+gem "faraday"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
@@ -52,6 +54,9 @@ group :development, :test do
 
   # Use RSpec for tests instead of Minitest [https://rspec.info/]
   gem "rspec-rails"
+
+  # Use Foreman to manage Procfile-based applications in development
+  gem "foreman"
 end
 
 group :development do

@@ -9,7 +9,7 @@ services:
       args:
         ARG_RAILS_ENV: development
         ARG_BUNDLE_WITHOUT: ""
-    command: bundle exec puma -C config/puma.rb
+    command: bin/dev
     image: buses_monitor:development
     container_name: buses_monitor
     stdin_open: true # docker run -i
