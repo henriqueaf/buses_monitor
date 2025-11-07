@@ -8,11 +8,11 @@ export default class extends Controller {
 
   connect() {
     // Using data-bus-list-buses-value attribute
-    this.busesJson = JSON.parse(this.busesValue);
+    const busArray = JSON.parse(this.busesValue);
 
     // setTimeout to ensure the map is initialized before dispatching the event
     setTimeout(() => {
-      this.dispatch("bussesUpdated", { detail: { busesJson: this.busesJson } });
+      this.dispatch("busesUpdated", { detail: { busArray: busArray } });
     }, 1000);
   }
 }

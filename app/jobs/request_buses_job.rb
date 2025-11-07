@@ -15,7 +15,7 @@ class RequestBusesJob < ApplicationJob
   def fetch_brt_buses
     buses = RequestBrtBuses.call
 
-    unless buses.blank?
+    if buses.present? && buses["veiculos"].any?
       puts "Fetched BRT buses: #{buses["veiculos"].size} buses"
       BrtBusesCache.write(buses["veiculos"])
 

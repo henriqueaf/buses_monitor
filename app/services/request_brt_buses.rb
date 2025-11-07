@@ -18,10 +18,10 @@ class RequestBrtBuses
     if response.success?
       JSON.parse(response.body)
     else
-      []
+      {}
     end
   rescue Faraday::Error => e
     Rails.logger.error("Failed to fetch buses: #{e.message}")
-    []
+    {}
   end
 end

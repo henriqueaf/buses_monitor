@@ -57,6 +57,9 @@ group :development, :test do
 
   # Use Foreman to manage Procfile-based applications in development
   gem "foreman"
+
+  # Provides additional assertions for controller testing
+  gem "rails-controller-testing"
 end
 
 group :development do

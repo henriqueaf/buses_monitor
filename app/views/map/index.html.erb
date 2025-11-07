@@ -11,7 +11,7 @@
 
 <%= turbo_stream_from 'map_controller_index_page' %>
 
-<div data-controller="map" data-action="bus-list:bussesUpdated->map#handleBussesUpdated">
+<div data-controller="map" data-action="bus-list:busesUpdated->map#handleBusesUpdated">
   <div id="map"></div>
 
   <%= render 'input_buses_list', buses: @buses %>

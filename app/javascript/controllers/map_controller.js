@@ -5,7 +5,7 @@ export default class MapController extends Controller {
   static RIO_DE_JANEIRO_COORDINATES = [-22.9228, -43.4643];
 
   initialize() {
-    this.busesJson = [];
+    this.busArray = [];
     this.map = null;
   }
 
@@ -13,8 +13,8 @@ export default class MapController extends Controller {
     this.#initializeMap();
   }
 
-  handleBussesUpdated(event) {
-    this.busesJson = event.detail.busesJson;
+  handleBusesUpdated(event) {
+    this.busArray = event.detail.busArray;
     this.#createBusMarkers();
   }
 
@@ -27,11 +27,11 @@ export default class MapController extends Controller {
   }
 
   #createBusMarkers() {
-    if (!this.busesJson) return;
+    if (!this.busArray) return;
 
     const markers = [];
 
-    this.busesJson.forEach(bus => {
+    this.busArray.forEach(bus => {
       const marker = L.marker([bus.latitude, bus.longitude]).addTo(this.map)
         .bindPopup(`Trajeto: ${bus.trajeto}`);
 
