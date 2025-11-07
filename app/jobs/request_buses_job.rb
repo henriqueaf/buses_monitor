@@ -16,8 +16,14 @@ class RequestBusesJob < ApplicationJob
     buses = RequestBrtBuses.call
 
     unless buses.blank?
-      puts "Fetched BRT buses: #{buses['veiculos'].size} buses"
-      Rails.cache.write('buses_monitor:brt_buses', JSON.generate(buses['veiculos']))
+      puts "Fetched BRT buses: #{buses["veiculos"].size} buses"
+      BrtBusesCache.write(buses["veiculos"])
+
+      puts "Sending broadcast to MapController index page"
+      Turbo::StreamsChannel.broadcast_update_to "map_controller_index_page",
+        target: "bus-list-input",
+        partial: "map/input_buses_list",
+        locals: { buses: buses["veiculos"] }
     end
   end
 end

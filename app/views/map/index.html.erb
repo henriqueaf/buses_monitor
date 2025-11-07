@@ -7,20 +7,12 @@
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin="">
   </script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const map = L.map('map').setView([51.505, -0.09], 13);
-
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-
-      L.marker([51.5, -0.09]).addTo(map)
-          .bindPopup("Number of buses: <%= @buses.size %>")
-          .openPopup();
-    });
-  </script>
 <% end %>
 
-<div id="map"></div>
+<%= turbo_stream_from 'map_controller_index_page' %>
+
+<div data-controller="map" data-action="bus-list:bussesUpdated->map#handleBussesUpdated">
+  <div id="map"></div>
+
+  <%= render 'input_buses_list', buses: @buses %>
+</div>
