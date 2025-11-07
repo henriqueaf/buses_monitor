@@ -16,3 +16,12 @@
 
   <%= render 'input_buses_list', buses: @buses %>
 </div>
+
+<div id="map-instructions-panel" class="card shadow-sm">
+  <div class="card-body">
+    <p class="mb-0 card-text">
+      <i class="bi bi-info-circle"></i>
+      <%= t('map.update_interval', interval: ENV['REQUEST_BRT_BUSES_INTERVAL_SECONDS']) %>
+    </p>
+  </div>
+</div>

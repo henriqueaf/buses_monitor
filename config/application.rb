@@ -38,5 +38,8 @@ module BusesMonitor
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # Set default locale to Brazilian Portuguese
+    config.i18n.default_locale = :'pt-BR'
   end
 end
