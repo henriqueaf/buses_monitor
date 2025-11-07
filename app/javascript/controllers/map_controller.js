@@ -7,6 +7,7 @@ export default class MapController extends Controller {
   initialize() {
     this.busArray = [];
     this.map = null;
+    this.featureGroup = null;
   }
 
   connect() {
@@ -27,7 +28,7 @@ export default class MapController extends Controller {
   }
 
   #createBusMarkers() {
-    if (!this.busArray) return;
+    if (!this.busArray || this.busArray.length === 0) return;
 
     const markers = [];
 
@@ -38,7 +39,20 @@ export default class MapController extends Controller {
       markers.push(marker);
     });
 
-    const fg = L.featureGroup(markers).addTo(this.map);
-    this.map.fitBounds(fg.getBounds());
+    this.#fitMapToMarkers(markers);
+  }
+
+  #fitMapToMarkers(markers) {
+    this.#clearFeatureGroup();
+
+    this.featureGroup = L.featureGroup(markers).addTo(this.map);
+    this.map.fitBounds(this.featureGroup.getBounds().pad(0.2));
+  }
+
+  #clearFeatureGroup() {
+    if (this.featureGroup) {
+      this.featureGroup.clearLayers();
+      this.featureGroup.remove();
+    }
   }
 }

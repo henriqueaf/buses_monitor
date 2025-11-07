@@ -12,7 +12,7 @@ RSpec.describe RequestBusesJob, type: :job do
   end
 
   describe "#perform" do
-    context "when bus_type is :brt" do
+    context "when bus_type is brt" do
       before do
         allow(RequestBrtBuses).to receive(:call).and_return(mock_buses_response)
         allow(BrtBusesCache).to receive(:write)
@@ -20,13 +20,13 @@ RSpec.describe RequestBusesJob, type: :job do
       end
 
       it "calls RequestBrtBuses.call to fetch data" do
-        job.perform(bus_type: :brt)
+        job.perform(bus_type: 'brt')
         expect(RequestBrtBuses).to have_received(:call)
       end
 
       it "writes buses data to cache when buses are present" do
         expect(BrtBusesCache).to receive(:write).with(mock_buses_response["veiculos"])
-        job.perform(bus_type: :brt)
+        job.perform(bus_type: 'brt')
       end
 
       it "broadcasts update to Turbo streams when buses are present" do
@@ -36,7 +36,7 @@ RSpec.describe RequestBusesJob, type: :job do
           partial: "map/input_buses_list",
           locals: { buses: mock_buses_response["veiculos"] }
         )
-        job.perform(bus_type: :brt)
+        job.perform(bus_type: 'brt')
       end
 
       context "when RequestBrtBuses returns nil" do
@@ -46,17 +46,17 @@ RSpec.describe RequestBusesJob, type: :job do
 
         it "does not write to cache" do
           expect(BrtBusesCache).not_to receive(:write)
-          job.perform(bus_type: :brt)
+          job.perform(bus_type: 'brt')
         end
 
         it "does not broadcast update" do
           expect(Turbo::StreamsChannel).not_to receive(:broadcast_update_to)
-          job.perform(bus_type: :brt)
+          job.perform(bus_type: 'brt')
         end
 
         it "enqueues the job" do
           expect {
-            described_class.perform_later(bus_type: :brt)
+            described_class.perform_later(bus_type: 'brt')
           }.to have_enqueued_job(RequestBusesJob)
         end
       end
@@ -68,12 +68,12 @@ RSpec.describe RequestBusesJob, type: :job do
 
         it "does not write to cache" do
           expect(BrtBusesCache).not_to receive(:write)
-          job.perform(bus_type: :brt)
+          job.perform(bus_type: 'brt')
         end
 
         it "does not broadcast update" do
           expect(Turbo::StreamsChannel).not_to receive(:broadcast_update_to)
-          job.perform(bus_type: :brt)
+          job.perform(bus_type: 'brt')
         end
       end
     end
@@ -81,12 +81,12 @@ RSpec.describe RequestBusesJob, type: :job do
     context "when bus_type is unknown" do
       it "logs an error" do
         expect(Rails.logger).to receive(:error).with("Unknown bus type: invalid_type")
-        job.perform(bus_type: :invalid_type)
+        job.perform(bus_type: 'invalid_type')
       end
 
       it "does not call RequestBrtBuses" do
         expect(RequestBrtBuses).not_to receive(:call)
-        job.perform(bus_type: :invalid_type)
+        job.perform(bus_type: 'invalid_type')
       end
     end
   end

@@ -3,7 +3,7 @@ class RequestBusesJob < ApplicationJob
 
   def perform(bus_type:)
     case bus_type
-    when :brt
+    when 'brt'
       fetch_brt_buses
     else
       Rails.logger.error("Unknown bus type: #{bus_type}")
