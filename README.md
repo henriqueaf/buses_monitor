@@ -23,14 +23,52 @@ The main goal of this project is to provide a real-time visualization of all bus
 - Simple and intuitive UI
 - Built with Ruby on Rails for rapid development
 
+## Websocket structure to update bus list inside the map
+![alt text](websocket_flowchart.png)
+
+Explanation in text:
+```
+graph TD
+	subgraph "Client-Side (Browser)"
+		A["map_controller.js"]
+	end
+
+	subgraph "Server-Side (Rails Backend)"
+		B["MapChannel.rb"]
+		C["RequestBusesJob.rb"]
+		D["ActionCable.server"]
+	end
+
+	subgraph "External Service"
+		E["BRT Bus API"]
+	end
+
+	A -- "1. Connects & Subscribes to MapChannel" --> B;
+	B -- "2. Establishes stream from 'map_controller_channel'" --> D;
+
+	C -- "3. Performs background job, fetches data from" --> E;
+	E -- "4. Returns bus data" --> C
+	C -- "5. Broadcasts bus data to 'map_controller_channel'" --> D;
+
+	D -- "6. Pushes data via WebSocket to subscribed clients" --> A;
+	A -- "7. 'received' callback is triggered" --> A;
+	A -- "8. Updates Leaflet map with new bus locations" --> A;
+
+	style A fill:#D2E9FF,stroke:#333,stroke-width:2px
+	style B fill:#C8E6C9,stroke:#333,stroke-width:2px
+	style C fill:#FFF9C4,stroke:#333,stroke-width:2px
+	style D fill:#FFCCBC,stroke:#333,stroke-width:2px
+	style E fill:#F5F5F5,stroke:#333,stroke-width:1px
+```
+
 ## Technology Stack
 
-- **Ruby on Rails** - Web framework
-- **SQLite** - Primary database
+- [**Ruby on Rails**](https://rubyonrails.org/) - Web framework
+- [**SQLite**](https://sqlite.org/) - Primary database
 - **HTML5 & CSS3** - Front-end markup and styling
-- **Google Maps API** - Map visualization
-- **Docker & Docker Compose** - Containerization
-- **Puma** - Application server
+- [**Leaflet JS Maps API**](https://leafletjs.com/) - Map visualization
+- [**Docker & Docker Compose**](https://www.docker.com/) - Containerization
+- [**Puma**](https://puma.io/) - Application server
 
 ## Getting Started with Docker Compose
 
