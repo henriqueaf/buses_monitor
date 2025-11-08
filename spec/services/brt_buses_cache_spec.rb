@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe BrtBusesCache do
   let(:sample_buses) do
     [
-      {codigo:"901008", placa:"RIV8A75", linha:"22", latitude:-22.964785, longitude:-43.391878, dataHora:1762536894000, velocidade:1.2, id_migracao_trajeto:"8970", sentido:"ida", trajeto:"22 - ALVORADA X JARDIM OCEÂNICO (PARADOR) [IDA]", hodometro:217397.4, direcao:" ", ignicao:0, capacidadePeVeiculo:0, capacidadeSentadoVeiculo:0}.with_indifferent_access,
-      {codigo:"901011", placa:"RIV8A74", linha:"22", latitude:-23.006588, longitude:-43.312418, dataHora:1762536881000, velocidade:0.3, id_migracao_trajeto:"8971", sentido:"volta", trajeto:"22 - JARDIM OCEÂNICO X ALVORADA (PARADOR) [VOLTA]", hodometro:231993.7, direcao:262, ignicao:1, capacidadePeVeiculo:0, capacidadeSentadoVeiculo:0}.with_indifferent_access
+      { codigo: "901008", placa: "RIV8A75", linha: "22", latitude: -22.964785, longitude: -43.391878, dataHora: 1762536894000, velocidade: 1.2, id_migracao_trajeto: "8970", sentido: "ida", trajeto: "22 - ALVORADA X JARDIM OCEÂNICO (PARADOR) [IDA]", hodometro: 217397.4, direcao: " ", ignicao: 0, capacidadePeVeiculo: 0, capacidadeSentadoVeiculo: 0 }.with_indifferent_access,
+      { codigo: "901011", placa: "RIV8A74", linha: "22", latitude: -23.006588, longitude: -43.312418, dataHora: 1762536881000, velocidade: 0.3, id_migracao_trajeto: "8971", sentido: "volta", trajeto: "22 - JARDIM OCEÂNICO X ALVORADA (PARADOR) [VOLTA]", hodometro: 231993.7, direcao: 262, ignicao: 1, capacidadePeVeiculo: 0, capacidadeSentadoVeiculo: 0 }.with_indifferent_access
     ]
   end
 
@@ -67,7 +67,7 @@ RSpec.describe BrtBusesCache do
     end
 
     it "overwrites previous data when writing new data" do
-      old_buses = [{ "id" => "999", "line" => "Old Bus" }]
+      old_buses = [ { "id" => "999", "line" => "Old Bus" } ]
       described_class.write(old_buses)
 
       described_class.write(sample_buses)

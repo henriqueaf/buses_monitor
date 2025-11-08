@@ -1,5 +1,5 @@
 class RequestBrtBuses
-  BASE_URL = 'https://dados.mobilidade.rio'
+  BASE_URL = "https://dados.mobilidade.rio"
 
   def self.call
     new.call
@@ -14,7 +14,7 @@ class RequestBrtBuses
   attr_reader :connection
 
   def call
-    response = connection.get('/gps/brt')
+    response = connection.get("/gps/brt")
     if response.success?
       JSON.parse(response.body)
     else
