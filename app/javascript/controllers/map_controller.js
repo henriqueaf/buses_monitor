@@ -6,12 +6,12 @@ export default class MapController extends Controller {
 
   initialize() {
     this.busArray = [];
-    this.map = null;
+    this.map = L.map('map').setView(MapController.RIO_DE_JANEIRO_COORDINATES, 11);
     this.featureGroup = null;
   }
 
   connect() {
-    this.#initializeMap();
+    this.#initializeMapLayer();
   }
 
   handleBusesUpdated(event) {
@@ -19,9 +19,7 @@ export default class MapController extends Controller {
     this.#createBusMarkers();
   }
 
-  #initializeMap() {
-    this.map = L.map('map').setView(MapController.RIO_DE_JANEIRO_COORDINATES, 11);
-
+  #initializeMapLayer() {
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
@@ -33,19 +31,22 @@ export default class MapController extends Controller {
     const markers = [];
 
     this.busArray.forEach(bus => {
-      const marker = L.marker([bus.latitude, bus.longitude]).addTo(this.map)
+      const marker = L.marker([bus.latitude, bus.longitude])
         .bindPopup(`Trajeto: ${bus.trajeto}`);
 
       markers.push(marker);
     });
 
-    this.#fitMapToMarkers(markers);
+    this.#clearFeatureGroup();
+    this.#addMarkersToMap(markers);
+    // this.#fitMapToMarkers();
   }
 
-  #fitMapToMarkers(markers) {
-    this.#clearFeatureGroup();
-
+  #addMarkersToMap(markers) {
     this.featureGroup = L.featureGroup(markers).addTo(this.map);
+  }
+
+  #fitMapToMarkers() {
     this.map.fitBounds(this.featureGroup.getBounds().pad(0.2));
   }
 
