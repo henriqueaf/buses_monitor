@@ -1,6 +1,7 @@
 pt-BR:
   map:
-    update_interval: "O mapa é atualizado de %{interval} em %{interval} segundos"
+    update_interval: "Mapa atualizado a cada %{interval} segundos"
+    buses_fit_zoom: "Ajustar Zoom"
 
   date:
     abbr_day_names:

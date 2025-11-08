@@ -8,8 +8,8 @@
 
 #map-instructions-panel {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10px;
+  right: 10px;
   z-index: 1000;
   max-width: 350px;
 }
@@ -21,4 +21,11 @@
 #map-instructions-panel p {
   font-size: 0.9rem;
   color: #495057;
+}
+
+#map-action-button {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 1000;
 }

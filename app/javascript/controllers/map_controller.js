@@ -39,14 +39,13 @@ export default class MapController extends Controller {
 
     this.#clearFeatureGroup();
     this.#addMarkersToMap(markers);
-    // this.#fitMapToMarkers();
   }
 
   #addMarkersToMap(markers) {
     this.featureGroup = L.featureGroup(markers).addTo(this.map);
   }
 
-  #fitMapToMarkers() {
+  fitMapToMarkers() {
     this.map.fitBounds(this.featureGroup.getBounds().pad(0.2));
   }
 

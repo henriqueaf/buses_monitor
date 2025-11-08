@@ -30,6 +30,7 @@
 en:
   map:
     update_interval: "The map is updated every %{interval} seconds"
+    buses_fit_zoom: "Fit Zoom"
 
   date:
     abbr_day_names:

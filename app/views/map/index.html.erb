@@ -15,9 +15,15 @@
   <div id="map"></div>
 
   <%= render 'input_buses_list', buses: @buses %>
+
+  <div id="map-action-button">
+    <button data-action="click->map#fitMapToMarkers" type="button" class="btn btn-primary shadow">
+      <i class="bi bi-arrows-fullscreen me-2"></i><%= t('map.buses_fit_zoom') %>
+    </button>
+  </div>
 </div>
 
-<div id="map-instructions-panel" class="card shadow-sm">
+<div id="map-instructions-panel" class="card shadow-sm bg-info-subtle">
   <div class="card-body">
     <p class="mb-0 card-text">
       <i class="bi bi-info-circle"></i>
