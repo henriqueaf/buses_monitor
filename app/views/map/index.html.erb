@@ -9,12 +9,8 @@
   </script>
 <% end %>
 
-<%= turbo_stream_from 'map_controller_index_page' %>
-
-<div data-controller="map" data-action="bus-list:busesUpdated->map#handleBusesUpdated">
-  <div id="map"></div>
-
-  <%= render 'input_buses_list', buses: @buses %>
+<div data-controller="map" data-map-buses-value="<%= @buses.to_json %>">
+  <div id="map" />
 
   <div id="map-action-button">
     <button data-action="click->map#fitMapToMarkers" type="button" class="btn btn-primary shadow">
