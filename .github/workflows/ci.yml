@@ -82,5 +82,6 @@ jobs:
         env:
           RAILS_ENV: test
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          REQUEST_BRT_BUSES_INTERVAL_SECONDS: 20
         run: bin/rails db:test:prepare && bundle exec rspec
 

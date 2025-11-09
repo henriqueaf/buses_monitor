@@ -29,19 +29,23 @@ RSpec.describe RequestBusesJob, type: :job do
         job.perform(bus_type: 'brt')
       end
 
-      it "broadcasts update to Turbo streams when buses are present" do
-        expect(Turbo::StreamsChannel).to receive(:broadcast_update_to).with(
-          "map_controller_index_page",
-          target: "bus-list-input",
-          partial: "map/input_buses_list",
-          locals: { buses: mock_buses_response["veiculos"] }
+      it "broadcasts update to Action cable MapChannel when buses are present" do
+        expect(ActionCable.server).to receive(:broadcast).with(
+          MapChannel::CHANNEL_KEY_NAME,
+          { buses: mock_buses_response["veiculos"] }
         )
         job.perform(bus_type: 'brt')
       end
 
-      context "when RequestBrtBuses returns nil" do
+      it "enqueues the job" do
+        expect {
+          described_class.perform_later(bus_type: 'brt')
+        }.to have_enqueued_job(RequestBusesJob)
+      end
+
+      context "when RequestBrtBuses returns {}" do
         before do
-          allow(RequestBrtBuses).to receive(:call).and_return(nil)
+          allow(RequestBrtBuses).to receive(:call).and_return({})
         end
 
         it "does not write to cache" do
@@ -50,14 +54,8 @@ RSpec.describe RequestBusesJob, type: :job do
         end
 
         it "does not broadcast update" do
-          expect(Turbo::StreamsChannel).not_to receive(:broadcast_update_to)
+          expect(ActionCable.server).not_to receive(:broadcast)
           job.perform(bus_type: 'brt')
-        end
-
-        it "enqueues the job" do
-          expect {
-            described_class.perform_later(bus_type: 'brt')
-          }.to have_enqueued_job(RequestBusesJob)
         end
       end
 

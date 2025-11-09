@@ -1,0 +1,40 @@
+digraph WebSocketFlow {
+  rankdir=TB;
+  fontname="Helvetica,Arial,sans-serif";
+  node [shape=box, style="rounded,filled", fontname="Helvetica,Arial,sans-serif"];
+  edge [fontname="Helvetica,Arial,sans-serif"];
+
+  subgraph cluster_client {
+    label="Client-Side (Browser)";
+    style=filled;
+    color="#E6F2FF";
+    node [fillcolor="#D2E9FF", style="rounded,filled"];
+    map_controller [label="map_controller.js"];
+  }
+
+  subgraph cluster_server {
+    label="Server-Side (Rails Backend)";
+    style=filled;
+    color="#E8F5E9";
+    map_channel [label="MapChannel.rb", fillcolor="#C8E6C9", style="rounded,filled"];
+    request_job [label="RequestBusesJob.rb", fillcolor="#FFF9C4", style="rounded,filled"];
+    action_cable [label="ActionCable.server", fillcolor="#FFCCBC", style="rounded,filled"];
+  }
+
+  subgraph cluster_external {
+      label="External Service";
+      style=filled;
+      color="#FAFAFA";
+      node [fillcolor="#F5F5F5", style="rounded,filled"];
+      brt_api [label="BRT Bus API"];
+  }
+
+  // Flow
+  map_controller -> map_channel [label="1. Connects & Subscribes"];
+  map_channel -> action_cable [label="2. Establishes stream"];
+  request_job -> brt_api [label="3. Fetches data"];
+  brt_api -> request_job [label="4. Returns data"];
+  request_job -> action_cable [label="5. Broadcasts data"];
+  action_cable -> map_controller [label="6. Pushes data via WebSocket"];
+  map_controller -> map_controller [label="7. 'received' callback updates map"];
+}
