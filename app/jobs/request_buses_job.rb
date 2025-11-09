@@ -16,10 +16,9 @@ class RequestBusesJob < ApplicationJob
     buses = RequestBrtBuses.call
 
     if buses["veiculos"]&.any?
-      puts "Fetched BRT buses: #{buses["veiculos"].size} buses"
       BrtBusesCache.write(buses["veiculos"])
 
-      puts "Sending broadcast to MapChannel"
+      # Sending broadcast to MapChannel
       ActionCable.server.broadcast(
         MapChannel::CHANNEL_KEY_NAME,
         { buses: buses["veiculos"] }

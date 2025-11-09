@@ -17,11 +17,7 @@ export default class MapController extends Controller {
 
   connect() {
     this.#initializeMapLayer();
-    this.#initializeConsumerSubscription();
-
-    // This value is comming from the data-map-buses-value attribute
-    const busListInitialValue = JSON.parse(this.busesValue);
-    this.#handleBusesUpdated(busListInitialValue);
+    this.#subscribeToMapChannel();
   }
 
   disconnect() {
@@ -32,7 +28,7 @@ export default class MapController extends Controller {
     this.map.fitBounds(this.featureGroup.getBounds().pad(0.2));
   }
 
-  #initializeConsumerSubscription() {
+  #subscribeToMapChannel() {
     this.channel = consumer.subscriptions.create("MapChannel", {
       received: data => this.#handleBusesUpdated(data.buses)
     });

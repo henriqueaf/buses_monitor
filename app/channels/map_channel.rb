@@ -3,5 +3,8 @@ class MapChannel < ApplicationCable::Channel
 
   def subscribed
     stream_from CHANNEL_KEY_NAME
+
+    buses = BrtBusesCache.read
+    transmit({ buses: buses })
   end
 end
