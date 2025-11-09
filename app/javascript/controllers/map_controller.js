@@ -10,7 +10,6 @@ export default class MapController extends Controller {
   }
 
   initialize() {
-    this.busArray = [];
     this.map = L.map('map').setView(MapController.RIO_DE_JANEIRO_COORDINATES, 11);
     this.featureGroup = null;
   }
@@ -34,9 +33,13 @@ export default class MapController extends Controller {
     });
   }
 
-  #handleBusesUpdated(buses) {
-    this.busArray = buses;
-    this.#createBusMarkers();
+  #handleBusesUpdated(busArray) {
+    const filteredBusArray = this.#filterBusesWithEngineOn(busArray);
+    this.#createBusMarkers(filteredBusArray);
+  }
+
+  #filterBusesWithEngineOn(buses) {
+    return buses.filter(bus => bus.ignicao === 1);
   }
 
   #initializeMapLayer() {
@@ -45,12 +48,12 @@ export default class MapController extends Controller {
     }).addTo(this.map);
   }
 
-  #createBusMarkers() {
-    if (!this.busArray || this.busArray.length === 0) return;
+  #createBusMarkers(busArray) {
+    if (!busArray || busArray.length === 0) return;
 
     const markers = [];
 
-    this.busArray.forEach(bus => {
+    busArray.forEach(bus => {
       const marker = L.marker([bus.latitude, bus.longitude])
         .bindPopup(`Trajeto: ${bus.trajeto}`);
 
