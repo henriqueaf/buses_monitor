@@ -2,6 +2,9 @@
 
 A Ruby on Rails project to list all buses from Rio de Janeiro city in a full screen map in real time.
 
+DEMO: https://buses-monitor.onrender.com
+(Every time a push is made to the `main` branch, the [Render](https://render.com/) service will deploy a new version of the app).
+
 ## Table of Contents
 
 - [Purpose](#purpose)
