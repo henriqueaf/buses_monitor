@@ -4,7 +4,7 @@ services:
     platform: linux/x86_64
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       target: development
       args:
         ARG_RAILS_ENV: development
