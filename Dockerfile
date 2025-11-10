@@ -51,7 +51,7 @@ COPY . .
 RUN bundle exec bootsnap precompile -j 1 app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 REQUEST_BRT_BUSES_INTERVAL_SECONDS=20 ./bin/rails assets:precompile
 
 
 
@@ -73,4 +73,5 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start server via Thruster by default, this can be overwritten at runtime
 EXPOSE 80
-CMD ["./bin/thrust", "./bin/rails", "server"]
+# CMD ["./bin/thrust", "./bin/rails", "server"]
+CMD ["bundle", "exec", "foreman", "start", "-f", "Procfile"]

@@ -39,6 +39,9 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
 
+# Use Foreman to manage Procfile-based applications in development
+gem "foreman"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -54,9 +57,6 @@ group :development, :test do
 
   # Use RSpec for tests instead of Minitest [https://rspec.info/]
   gem "rspec-rails"
-
-  # Use Foreman to manage Procfile-based applications in development
-  gem "foreman"
 
   # Provides additional assertions for controller testing
   gem "rails-controller-testing"
