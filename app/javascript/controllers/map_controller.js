@@ -34,6 +34,8 @@ export default class MapController extends Controller {
   }
 
   #handleBusesUpdated(busArray) {
+    if (!busArray) return;
+
     const filteredBusArray = this.#filterBusesWithEngineOn(busArray);
     this.#createBusMarkers(filteredBusArray);
   }

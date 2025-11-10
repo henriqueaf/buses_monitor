@@ -6,6 +6,8 @@ A Ruby on Rails project to list all buses from Rio de Janeiro city in a full scr
 
 - [Purpose](#purpose)
 - [Features](#features)
+- [WebSocket Structure](#websocket-structure-to-update-bus-list-inside-the-map)
+- [WebSocket JavaScript connection example](#example-how-to-connect-the-websocket-using-node-console)
 - [Technology Stack](#technology-stack)
 - [Getting Started with Docker Compose](#getting-started-with-docker-compose)
 - [Usage Example](#usage-example)
@@ -24,9 +26,10 @@ The main goal of this project is to provide a real-time visualization of all bus
 - Built with Ruby on Rails for rapid development
 
 ## Websocket structure to update bus list inside the map
+- Flow chart
 ![alt text](websocket_flowchart.png)
 
-Explanation in text:
+- Chart in text:
 ```
 graph TD
 	subgraph "Client-Side (Browser)"
@@ -61,11 +64,56 @@ graph TD
 	style E fill:#F5F5F5,stroke:#333,stroke-width:1px
 ```
 
+## Example how to connect the Websocket using node console
+Run this command inside a node console
+
+```JavaScript
+// Javascript example on how to connect to the MapChannel
+function createSocket() {
+  const socket = new WebSocket('ws://localhost:3000/cable');
+
+  socket.onopen = function(_event) {
+    console.log('WebSocket is connected.');
+
+    const subscribeMessage = {
+      command: 'subscribe',
+      identifier: JSON.stringify({ channel: 'MapChannel' })
+    };
+
+		// As soon as the WebSocket connect, the server will return the
+		// current bust list already saved in the Rails Cache. The method
+		// "onmessage" will be called immidiately after WebSocket connects.
+		// After that, the "onmessage" method will be called periodically
+		// as soon as the server gets the updated bus list from the API.
+    socket.send(JSON.stringify(subscribeMessage));
+  };
+
+  socket.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+
+    if (data.message?.buses) {
+      console.log('Received bus list:', data.message.buses.length);
+    }
+  };
+
+  socket.onclose = function(event) {
+    console.log('WebSocket is closed.');
+  };
+
+  socket.onerror = function(error) {
+    console.error('WebSocket error:', error);
+  };
+
+  return socket;
+}
+
+const socket = createSocket();
+```
+
 ## Technology Stack
 
-- [**Ruby on Rails**](https://rubyonrails.org/) - Web framework
+- [**Ruby on Rails**](https://rubyonrails.org/) - Web framework for Ruby programming language
 - [**SQLite**](https://sqlite.org/) - Primary database
-- **HTML5 & CSS3** - Front-end markup and styling
 - [**Leaflet JS Maps API**](https://leafletjs.com/) - Map visualization
 - [**Docker & Docker Compose**](https://www.docker.com/) - Containerization
 - [**Puma**](https://puma.io/) - Application server
